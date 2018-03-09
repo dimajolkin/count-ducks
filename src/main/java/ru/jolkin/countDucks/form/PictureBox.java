@@ -41,7 +41,7 @@ public class PictureBox extends JPanel implements MouseListener, MouseWheelListe
 
         previous.translate(newX, newY);
 
-//        picture.getPosition().translate(newX, newY);
+        picture.getPosition().translate(newX, newY);
         position.translate(newX, newY);
 
         repaint();
@@ -87,7 +87,14 @@ public class PictureBox extends JPanel implements MouseListener, MouseWheelListe
     public void mouseClicked(MouseEvent e) {
 
         if (picture.crossing(e.getPoint())) {
-            project.getDuckManager().add(new Duck(picture.convertToPoint(e.getPoint()), Color.RED));
+            Color color = Color.GRAY;
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                color = Color.RED;
+            } else if (SwingUtilities.isRightMouseButton(e)) {
+                color = Color.GREEN;
+            }
+
+            project.getDuckManager().add(new Duck(picture.convertToPoint(e.getPoint()), color));
             repaint();
         }
     }

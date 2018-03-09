@@ -10,7 +10,6 @@ import javax.swing.*;
 
 public class Main {
     public ProjectManager manager = new ProjectManager(Config.PROJECT_DIR);
-    public Project project;
 
     public static void main(String[] args) throws Exception {
         new Main();
@@ -34,7 +33,6 @@ public class Main {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             PictureBox box = new PictureBox(project);
-
             frame.add(box);
 
             frame.setSize(Config.DEFAULT_WIDTH, Config.DEFAULT_HEIGHT);
