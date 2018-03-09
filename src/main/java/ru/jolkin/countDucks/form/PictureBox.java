@@ -1,6 +1,7 @@
 package ru.jolkin.countDucks.form;
 
 import ru.jolkin.countDucks.duck.Duck;
+import ru.jolkin.countDucks.duck.Type;
 import ru.jolkin.countDucks.elements.Picture;
 import ru.jolkin.countDucks.project.Project;
 
@@ -87,14 +88,18 @@ public class PictureBox extends JPanel implements MouseListener, MouseWheelListe
     public void mouseClicked(MouseEvent e) {
 
         if (picture.crossing(e.getPoint())) {
-            Color color = Color.GRAY;
+            Type type = Type.UNDEFINED;
+
             if (SwingUtilities.isLeftMouseButton(e)) {
-                color = Color.RED;
+                type = Type.WOMEN;
             } else if (SwingUtilities.isRightMouseButton(e)) {
-                color = Color.GREEN;
+                type = Type.MEN;
             }
 
-            project.getDuckManager().add(new Duck(picture.convertToPoint(e.getPoint()), color));
+            project.getDuckManager().add(new Duck(
+                    picture.convertToPoint(e.getPoint()),
+                    type
+            ));
             repaint();
         }
     }
@@ -122,7 +127,7 @@ public class PictureBox extends JPanel implements MouseListener, MouseWheelListe
         for (Duck d : project.getDuckManager().fetchAll()) {
             Point t = picture.convertToGlobal(d.getPosition());
 
-            g2d.setColor(d.getColor());
+            g2d.setColor(d.getType().getColor());
 
             g2d.fillOval(t.x - (d.getSize() / 2), t.y - (d.getSize() / 2), d.getSize(), d.getSize());
         }

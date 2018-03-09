@@ -28,11 +28,11 @@ public class DuckManager {
         return list;
     }
 
-    public HashMap<Color, Integer> groupByColor()
+    public HashMap<Type, Integer> groupByType()
     {
-        HashMap<Color, Integer> hashMap = new HashMap<>();
+        HashMap<Type, Integer> hashMap = new HashMap<>();
         for (Duck d: list) {
-            hashMap.put(d.getColor(), hashMap.getOrDefault(d.getColor(), 0) + 1);
+            hashMap.put(d.getType(), hashMap.getOrDefault(d.getType(), 0) + 1);
         }
 
         return hashMap;

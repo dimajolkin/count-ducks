@@ -1,8 +1,10 @@
 package ru.jolkin.countDucks;
 
+import ru.jolkin.countDucks.duck.Type;
 import ru.jolkin.countDucks.form.PictureBox;
 import ru.jolkin.countDucks.project.Project;
 import ru.jolkin.countDucks.project.ProjectManager;
+import ru.jolkin.countDucks.utils.ColorUtil;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -32,15 +34,6 @@ public class Main {
         }
     }
 
-    public final static String toHexString(Color colour) throws NullPointerException {
-        String hexColour = Integer.toHexString(colour.getRGB() & 0xffffff);
-        if (hexColour.length() < 6) {
-            hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
-        }
-        return "#" + hexColour;
-    }
-
-
     private   void runProject(Project project) {
         EventQueue.invokeLater(() -> {
 
@@ -51,8 +44,7 @@ public class Main {
             statusBar.add(status);
 
             JFrame frame = new JFrame();
-//            JOptionPane.showMessageDialog(frame,
-//                    "Eggs are not supposed to be green.");
+//            JOptionPane.showMessageDialog(frame, "Eggs are not supposed to be green.");
 
             frame.setTitle(project.getName());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,7 +53,6 @@ public class Main {
             box.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-//                    JLabel title = new JLabel("I love stackoverflow!", JLabel.CENTER);
                     String total = String.valueOf(project.getDuckManager().fetchAll().size());
                     StringBuilder buffer = new StringBuilder();
 
@@ -69,20 +60,20 @@ public class Main {
                     buffer.append(total);
                     buffer.append("        </font>");
 
+                    for (Map.Entry<Type, Integer> entity: project.getDuckManager().groupByType().entrySet()) {
 
-                    for (Map.Entry<Color, Integer> entity: project.getDuckManager().groupByColor().entrySet()) {
-
-                        String hex = toHexString(entity.getKey());
+                        String hex = ColorUtil.toHexString(entity.getKey().getColor());
 
                         buffer.append("<font color=");
                         buffer.append(hex);
                         buffer.append(">");
+                        buffer.append(entity.getKey().getName());
+                        buffer.append(": " );
                         buffer.append(entity.getValue());
-                        buffer.append("        </font>");
+                        buffer.append(" </font>");
                     }
 
                     status.setText("<html>" + buffer.toString() + "</html>");
-//                    status.setText("Count: " + String.valueOf(project.getDuckManager().fetchAll().size()));
                 }
 
                 @Override
