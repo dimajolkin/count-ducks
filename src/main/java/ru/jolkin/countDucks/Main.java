@@ -21,7 +21,7 @@ public class Main {
         int ret = fileOpen.showDialog(null, "Открыть файл");
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileOpen.getSelectedFile();
-            Project project = manager.create("Test", file);
+            Project project = manager.create(file.getName(), file);
             runProject(project);
         }
     }
@@ -30,13 +30,14 @@ public class Main {
     private   void runProject(Project project) {
         EventQueue.invokeLater(() -> {
             JFrame frame = new JFrame();
+            frame.setTitle(project.getName());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             PictureBox box = new PictureBox(project);
 
             frame.add(box);
 
-            frame.setSize(640, 480);
+            frame.setSize(Config.DEFAULT_WIDTH, Config.DEFAULT_HEIGHT);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
