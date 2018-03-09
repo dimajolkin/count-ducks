@@ -8,6 +8,7 @@ import java.util.List;
 
 public class DuckManager {
     private List<Duck> list = new ArrayList<>();
+    private HashMap<Type, Integer> groupByType = new HashMap<>();
 
     public DuckManager() {}
 
@@ -21,8 +22,8 @@ public class DuckManager {
     public void add(Duck duck)
     {
         list.add(duck);
+        groupByType.put(duck.getType(), groupByType.getOrDefault(duck.getType(), 0) + 1);
     }
-
 
     public List<Duck> fetchAll() {
         return list;
@@ -30,14 +31,8 @@ public class DuckManager {
 
     public HashMap<Type, Integer> groupByType()
     {
-        HashMap<Type, Integer> hashMap = new HashMap<>();
-        for (Duck d: list) {
-            hashMap.put(d.getType(), hashMap.getOrDefault(d.getType(), 0) + 1);
-        }
-
-        return hashMap;
+        return groupByType;
     }
-
 
     public void save(String fileName) throws IOException {
         FileOutputStream fos = new FileOutputStream(fileName);
@@ -45,6 +40,4 @@ public class DuckManager {
         oos.writeObject(list);
         oos.close();
     }
-
-
 }
