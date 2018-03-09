@@ -1,7 +1,9 @@
 package ru.jolkin.countDucks.duck;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DuckManager {
@@ -24,6 +26,16 @@ public class DuckManager {
 
     public List<Duck> fetchAll() {
         return list;
+    }
+
+    public HashMap<Color, Integer> groupByColor()
+    {
+        HashMap<Color, Integer> hashMap = new HashMap<>();
+        for (Duck d: list) {
+            hashMap.put(d.getColor(), hashMap.getOrDefault(d.getColor(), 0) + 1);
+        }
+
+        return hashMap;
     }
 
 
