@@ -116,6 +116,7 @@ public class Main {
 
                 @Override
                 public void keyReleased(KeyEvent e) {
+
                     if (e.getKeyCode() == KeyEvent.VK_S) {
 
                         try {
@@ -125,6 +126,11 @@ public class Main {
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
+                    } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+                        project.getDuckManager().back();
+                        statusBar.setText("Успешно отменено");
+
+                        box.repaint();
                     }
                 }
             });
