@@ -14,7 +14,7 @@ public class Project {
     private Image image;
     private DuckManager duckManager;
 
-    Project(String name, File file) {
+    public Project(String name, File file) {
         this.duckManager = new DuckManager();
         this.name = name;
         try {
@@ -37,7 +37,7 @@ public class Project {
         return duckManager;
     }
 
-    public void saveToDir(String dir) throws IOException {
-        duckManager.save(dir + "/ducks.tmp");
+    public void setDuckManager(DuckManager duckManager) {
+        this.duckManager = duckManager;
     }
 }

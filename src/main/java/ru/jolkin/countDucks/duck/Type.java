@@ -30,5 +30,12 @@ public class Type {
         return color.hashCode();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Type) {
+            return obj.hashCode() == hashCode();
+        }
 
+        return super.equals(obj);
+    }
 }

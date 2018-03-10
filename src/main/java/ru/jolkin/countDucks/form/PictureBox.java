@@ -17,18 +17,25 @@ public class PictureBox extends JPanel implements MouseListener, MouseWheelListe
     private Picture picture;
     private Point previous;
     private Point position;
+    private Point cursor;
 
     public PictureBox(Project project) {
         this.project = project;
         this.picture = new Picture(project.getImage());
         this.previous = new Point(0, 0);
         this.position = new Point(0, 0);
+        this.cursor = new Point(0, 0);
 
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
 
         setOpaque(false);
+    }
+
+    public Picture getPicture()
+    {
+        return picture;
     }
 
     @Override
@@ -48,14 +55,9 @@ public class PictureBox extends JPanel implements MouseListener, MouseWheelListe
         repaint();
     }
 
-
-
     @Override
     public void mouseMoved(MouseEvent e) {
-
-//        System.out.println(picture.getWidth());
-//        System.out.println(picture.convertToPoint(e.getPoint()));
-
+//        cursor = e.getPoint();
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {
@@ -94,12 +96,16 @@ public class PictureBox extends JPanel implements MouseListener, MouseWheelListe
                 type = Type.WOMEN;
             } else if (SwingUtilities.isRightMouseButton(e)) {
                 type = Type.MEN;
+            } else {
+//                cursor = e.getPoint();
             }
 
-            project.getDuckManager().add(new Duck(
-                    picture.convertToPoint(e.getPoint()),
-                    type
-            ));
+            if (type != null) {
+                project.getDuckManager().add(new Duck(
+                        picture.convertToPoint(e.getPoint()),
+                        type
+                ));
+            }
             repaint();
         }
     }
@@ -107,14 +113,11 @@ public class PictureBox extends JPanel implements MouseListener, MouseWheelListe
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g.create();
         AffineTransform tx = new AffineTransform();
-        AffineTransform tx2 = new AffineTransform();
 
+        tx.translate(cursor.x, cursor.y);
         tx.scale(picture.getZoom(), picture.getZoom());
-
-//        tx2.translate(picture.getPosition().x, picture.getPosition().y);
-        tx2.translate(position.x, position.y);
-        tx.concatenate(tx2);
-
+        tx.translate(-cursor.x, -cursor.y);
+        tx.translate(position.x, position.y);
 
         g2d.drawImage(picture.getImage(), tx, this);
 

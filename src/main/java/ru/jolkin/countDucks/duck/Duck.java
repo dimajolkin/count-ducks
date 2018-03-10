@@ -1,5 +1,7 @@
 package ru.jolkin.countDucks.duck;
 
+import com.google.gson.Gson;
+
 import java.awt.*;
 
 public class Duck {
@@ -12,6 +14,11 @@ public class Duck {
         this.type = type;
     }
 
+    public static Duck createByJson(String json)
+    {
+        return new Gson().fromJson(json, Duck.class);
+    }
+
     public Point getPosition() {
         return position;
     }
@@ -22,5 +29,9 @@ public class Duck {
 
     public Type getType() {
         return type;
+    }
+
+    public String toJson() {
+        return new Gson().toJson(this);
     }
 }

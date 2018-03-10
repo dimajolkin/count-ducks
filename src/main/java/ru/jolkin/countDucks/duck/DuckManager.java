@@ -1,22 +1,26 @@
 package ru.jolkin.countDucks.duck;
 
-import java.awt.*;
-import java.io.*;
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class DuckManager {
     private List<Duck> list = new ArrayList<>();
-    private HashMap<Type, Integer> groupByType = new HashMap<>();
+
+    private transient HashMap<Type, Integer> groupByType = new HashMap<>();
 
     public DuckManager() {}
 
-    public DuckManager(String fileName) throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(fileName);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        list = (List<Duck>)ois.readObject();
-        ois.close();
+    public static DuckManager createByJson(String json)
+    {
+        List<Duck> ducks = new Gson().fromJson(json, DuckManager.class).fetchAll();
+        DuckManager manager = new DuckManager();
+        for (Duck d: ducks) {
+            manager.add(d);
+        }
+
+        return manager;
     }
 
     public void add(Duck duck)
@@ -34,10 +38,8 @@ public class DuckManager {
         return groupByType;
     }
 
-    public void save(String fileName) throws IOException {
-        FileOutputStream fos = new FileOutputStream(fileName);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(list);
-        oos.close();
+    public String toJson()
+    {
+        return new Gson().toJson(this);
     }
 }

@@ -46,9 +46,9 @@ public class Picture {
 
     public Point convertToPoint(Point point)
     {
-        return  new Point(
-                (int)(point.x / zoom) - position.x,
-                (int)(point.y / zoom) - position.y
+        return new Point(
+                (int)((point.x - position.x) / zoom),
+                (int)((point.y - position.y) / zoom)
         );
     }
 

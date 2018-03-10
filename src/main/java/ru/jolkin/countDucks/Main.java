@@ -2,6 +2,7 @@ package ru.jolkin.countDucks;
 
 import ru.jolkin.countDucks.duck.Type;
 import ru.jolkin.countDucks.form.PictureBox;
+import ru.jolkin.countDucks.form.StatusBar;
 import ru.jolkin.countDucks.project.Project;
 import ru.jolkin.countDucks.project.ProjectManager;
 import ru.jolkin.countDucks.utils.ColorUtil;
@@ -9,6 +10,7 @@ import ru.jolkin.countDucks.utils.ColorUtil;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
@@ -29,51 +31,108 @@ public class Main {
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileOpen.getSelectedFile();
 
-            Project project = manager.create(file.getName(), file);
-            runProject(project);
+            Project project;
+            JFrame frame = new JFrame();
+            if (manager.projectExist(file.getName())) {
+
+                int n = JOptionPane.showConfirmDialog(
+                        frame,
+                        "Проект с таким названием уже существует, восстановить?",
+                        "Восстановление",
+                        JOptionPane.YES_NO_OPTION);
+                if (n == JOptionPane.YES_OPTION) {
+                    project = manager.recover(file.getName());
+                } else {
+                    manager.remove(file.getName());
+                    project = manager.create(file.getName(), file);
+                }
+            } else {
+                project = manager.create(file.getName(), file);
+            }
+
+            runProject(frame, project);
         }
     }
 
-    private   void runProject(Project project) {
+    private void refreshStatusBar(StatusBar statusBar, PictureBox box, Project project)
+    {
+        String total = String.valueOf(project.getDuckManager().fetchAll().size());
+        String zoom = String.valueOf(box.getPicture().getZoom());
+        StringBuilder buffer = new StringBuilder();
+
+//        buffer.append("<font> Pos: ");
+//        buffer.append(box.getPicture().getPosition());
+//        buffer.append("        </font>");
+//
+//        buffer.append("<font> Zoom: ");
+//        buffer.append(zoom);
+//        buffer.append("        </font>");
+
+        buffer.append("<font> Total: ");
+        buffer.append(total);
+        buffer.append("        </font>");
+
+        for (Map.Entry<Type, Integer> entity: project.getDuckManager().groupByType().entrySet()) {
+
+            String hex = ColorUtil.toHexString(entity.getKey().getColor());
+
+            buffer.append("<font color=");
+            buffer.append(hex);
+            buffer.append(">");
+            buffer.append(entity.getKey().getName());
+            buffer.append(": " );
+            buffer.append(entity.getValue());
+            buffer.append(" </font>");
+        }
+
+        statusBar.setText("<html>" + buffer.toString() + "</html>");
+    }
+
+    private   void runProject(JFrame frame, Project project) {
         EventQueue.invokeLater(() -> {
 
-            JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            statusBar.setBorder(new CompoundBorder(new LineBorder(Color.DARK_GRAY),
-                    new EmptyBorder(4, 4, 4, 4)));
-            final JLabel status = new JLabel();
-            statusBar.add(status);
-
-            JFrame frame = new JFrame();
+            StatusBar statusBar = new StatusBar();
 //            JOptionPane.showMessageDialog(frame, "Eggs are not supposed to be green.");
 
             frame.setTitle(project.getName());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.add(statusBar, BorderLayout.SOUTH);
+            statusBar.registry(frame);
+
             PictureBox box = new PictureBox(project);
+
+            frame.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    refreshStatusBar(statusBar, box, project);
+                }
+            });
+
+            frame.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {}
+
+                @Override
+                public void keyPressed(KeyEvent e) {}
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_S) {
+
+                        try {
+                            manager.save(project);
+                            statusBar.setText("Успешно сохранено");
+
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            });
+
             box.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    String total = String.valueOf(project.getDuckManager().fetchAll().size());
-                    StringBuilder buffer = new StringBuilder();
-
-                    buffer.append("<font> Total: ");
-                    buffer.append(total);
-                    buffer.append("        </font>");
-
-                    for (Map.Entry<Type, Integer> entity: project.getDuckManager().groupByType().entrySet()) {
-
-                        String hex = ColorUtil.toHexString(entity.getKey().getColor());
-
-                        buffer.append("<font color=");
-                        buffer.append(hex);
-                        buffer.append(">");
-                        buffer.append(entity.getKey().getName());
-                        buffer.append(": " );
-                        buffer.append(entity.getValue());
-                        buffer.append(" </font>");
-                    }
-
-                    status.setText("<html>" + buffer.toString() + "</html>");
+                    refreshStatusBar(statusBar, box, project);
                 }
 
                 @Override

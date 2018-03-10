@@ -1,7 +1,7 @@
 package ru.jolkin.countDucks;
 
 public class Config {
-    public static String PROJECT_DIR = "~/.ducksCount";
+    public static String PROJECT_DIR = "projects";
 
     public static boolean AUTO_SAVE = false;
 
