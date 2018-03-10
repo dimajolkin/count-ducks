@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Type {
 
-    public static final Type MEN = new Type(Color.BLUE, "Men");
-    public static final Type WOMEN = new Type(Color.RED, "Women");
+    public static final Type MEN = new Type(Color.BLUE, "Самец");
+    public static final Type WOMEN = new Type(Color.RED, "Самка");
     public static final Type UNDEFINED = new Type(Color.GRAY, "Undefined");
 
 
