@@ -18,6 +18,9 @@ task createJar(type: Jar) {
     with jar
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}
 
 repositories {
     mavenCentral()
