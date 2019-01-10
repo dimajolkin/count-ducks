@@ -9,6 +9,7 @@ import java.awt.*;
 public class StatusBar {
     private JPanel statusBar;
     private JLabel status;
+
     public StatusBar() {
         statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         statusBar.setBorder(new CompoundBorder(new LineBorder(Color.DARK_GRAY),
@@ -17,13 +18,11 @@ public class StatusBar {
         statusBar.add(status);
     }
 
-    public void setText(String text)
-    {
+    public void setText(String text) {
         status.setText(text);
     }
 
-    public void registry(Frame frame)
-    {
+    public void registry(Frame frame) {
         frame.add(statusBar, BorderLayout.SOUTH);
     }
 }

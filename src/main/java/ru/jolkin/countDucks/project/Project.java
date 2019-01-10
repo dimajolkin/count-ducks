@@ -32,8 +32,7 @@ public class Project {
         return name;
     }
 
-    public DuckManager getDuckManager()
-    {
+    public DuckManager getDuckManager() {
         return duckManager;
     }
 

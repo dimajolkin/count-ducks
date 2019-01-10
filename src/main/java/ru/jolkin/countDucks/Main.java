@@ -54,8 +54,7 @@ public class Main {
         }
     }
 
-    private void refreshStatusBar(StatusBar statusBar, PictureBox box, Project project)
-    {
+    private void refreshStatusBar(StatusBar statusBar, PictureBox box, Project project) {
         String total = String.valueOf(project.getDuckManager().fetchAll().size());
         String zoom = String.valueOf(box.getPicture().getZoom());
         StringBuilder buffer = new StringBuilder();
@@ -72,7 +71,7 @@ public class Main {
         buffer.append(total);
         buffer.append("        </font>");
 
-        for (Map.Entry<Type, Integer> entity: project.getDuckManager().groupByType().entrySet()) {
+        for (Map.Entry<Type, Integer> entity : project.getDuckManager().groupByType().entrySet()) {
 
             String hex = ColorUtil.toHexString(entity.getKey().getColor());
 
@@ -80,7 +79,7 @@ public class Main {
             buffer.append(hex);
             buffer.append(">");
             buffer.append(entity.getKey().getName());
-            buffer.append(": " );
+            buffer.append(": ");
             buffer.append(entity.getValue());
             buffer.append(" </font>");
         }
@@ -88,7 +87,7 @@ public class Main {
         statusBar.setText("<html>" + buffer.toString() + "</html>");
     }
 
-    private   void runProject(JFrame frame, Project project) {
+    private void runProject(JFrame frame, Project project) {
         EventQueue.invokeLater(() -> {
 
             StatusBar statusBar = new StatusBar();
@@ -109,10 +108,12 @@ public class Main {
 
             frame.addKeyListener(new KeyListener() {
                 @Override
-                public void keyTyped(KeyEvent e) {}
+                public void keyTyped(KeyEvent e) {
+                }
 
                 @Override
-                public void keyPressed(KeyEvent e) {}
+                public void keyPressed(KeyEvent e) {
+                }
 
                 @Override
                 public void keyReleased(KeyEvent e) {

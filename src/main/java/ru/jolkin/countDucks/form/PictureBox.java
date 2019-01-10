@@ -33,8 +33,7 @@ public class PictureBox extends JPanel implements MouseListener, MouseWheelListe
         setOpaque(false);
     }
 
-    public Picture getPicture()
-    {
+    public Picture getPicture() {
         return picture;
     }
 

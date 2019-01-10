@@ -18,8 +18,7 @@ public class ProjectManager {
         this.dir = dir;
     }
 
-    public void remove(String name)
-    {
+    public void remove(String name) {
         File dir = new File(this.dir + "/" + name);
         dir.delete();
     }
@@ -31,8 +30,7 @@ public class ProjectManager {
         return new Project(name, file);
     }
 
-    public Project recover(String name)
-    {
+    public Project recover(String name) {
         String projectDir = this.dir + "/" + name;
 
         File dir = new File(projectDir);
@@ -62,11 +60,11 @@ public class ProjectManager {
     public void save(Project project) throws IOException {
         String projectDir = this.dir + "/" + project.getName();
 
-        BufferedImage bi = (BufferedImage)project.getImage();
+        BufferedImage bi = (BufferedImage) project.getImage();
         File f = new File(projectDir + "/image.png");
         ImageIO.write(bi, "png", f);
 
-        BufferedWriter writer = new BufferedWriter( new FileWriter(projectDir + "/ducks.json"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(projectDir + "/ducks.json"));
         writer.write(project.getDuckManager().toJson());
         writer.close();
     }
@@ -75,6 +73,6 @@ public class ProjectManager {
         String projectDir = this.dir + "/" + name;
 
         File dir = new File(projectDir);
-        return  dir.exists();
+        return dir.exists();
     }
 }

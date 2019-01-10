@@ -16,8 +16,7 @@ public class Picture {
         this.image = image;
     }
 
-    public Point getPosition()
-    {
+    public Point getPosition() {
         return this.position;
     }
 
@@ -36,27 +35,24 @@ public class Picture {
     }
 
 
-    public boolean crossing(Point point)
-    {
-        return  point.getX() - position.x < getWidth() &&
+    public boolean crossing(Point point) {
+        return point.getX() - position.x < getWidth() &&
                 point.getX() - position.x > 0 &&
                 point.getY() - position.y < getHeight() &&
                 point.getY() - position.y > 0;
     }
 
-    public Point convertToPoint(Point point)
-    {
+    public Point convertToPoint(Point point) {
         return new Point(
-                (int)((point.x - position.x) / zoom),
-                (int)((point.y - position.y) / zoom)
+                (int) ((point.x - position.x) / zoom),
+                (int) ((point.y - position.y) / zoom)
         );
     }
 
-    public Point convertToGlobal(Point point)
-    {
-        return  new Point(
-                (int)(point.x * zoom) + this.position.x,
-                (int)(point.y * zoom) + this.position.y
+    public Point convertToGlobal(Point point) {
+        return new Point(
+                (int) (point.x * zoom) + this.position.x,
+                (int) (point.y * zoom) + this.position.y
         );
     }
 
@@ -64,13 +60,11 @@ public class Picture {
         return image;
     }
 
-    public int getWidth()
-    {
-        return (int)(image.getWidth(null) * zoom);
+    public int getWidth() {
+        return (int) (image.getWidth(null) * zoom);
     }
 
-    public int getHeight()
-    {
-        return (int)(image.getHeight(null) * zoom);
+    public int getHeight() {
+        return (int) (image.getHeight(null) * zoom);
     }
 }

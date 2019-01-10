@@ -7,15 +7,14 @@ import java.awt.*;
 public class Duck {
     private Point position;
     private Type type;
-    private int size =  10;
+    private static int size = 10;
 
     public Duck(Point position, Type type) {
         this.position = position;
         this.type = type;
     }
 
-    public static Duck createByJson(String json)
-    {
+    public static Duck createByJson(String json) {
         return new Gson().fromJson(json, Duck.class);
     }
 
