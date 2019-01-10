@@ -19,7 +19,12 @@ class App {
     private ProjectManager manager = new ProjectManager(Config.PROJECT_DIR);
 
     App() {
+
+        //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
         JFileChooser fileOpen = new JFileChooser();
+        SwingUtilities.updateComponentTreeUI(fileOpen);
+
         int ret = fileOpen.showDialog(null, "Открыть файл");
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileOpen.getSelectedFile();
