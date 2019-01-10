@@ -1,4 +1,3 @@
-import junit.framework.TestCase;
 import ru.jolkin.countDucks.duck.Duck;
 import ru.jolkin.countDucks.duck.Type;
 
