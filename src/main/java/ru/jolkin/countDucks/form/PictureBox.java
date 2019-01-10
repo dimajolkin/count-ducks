@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
 
 public class PictureBox extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener {
 

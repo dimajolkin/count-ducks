@@ -12,26 +12,33 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 
 public class ProjectManager {
+    private static String PROJECT_FILE_NAME = "ducks.json";
+
     private String dir;
 
-    public ProjectManager(String dir) {
-        this.dir = dir;
+    public ProjectManager(String projectDir) {
+        this.dir = projectDir;
     }
 
-    public void remove(String name) {
-        File dir = new File(this.dir + "/" + name);
+    private String getProjectDir(String projectName)
+    {
+        return  this.dir + "/" + projectName;
+    }
+
+    public void remove(String projectName) {
+        File dir = new File(this.dir + "/" + projectName);
         dir.delete();
     }
 
-    public Project create(String name, File file) {
-        File dir = new File(this.dir + "/" + name);
+    public Project create(String projectName, File file) {
+        File dir = new File(getProjectDir(projectName));
         dir.mkdirs();
 
-        return new Project(name, file);
+        return new Project(projectName, file);
     }
 
-    public Project recover(String name) {
-        String projectDir = this.dir + "/" + name;
+    public Project recover(String projectName) {
+        String projectDir = getProjectDir(projectName);
 
         File dir = new File(projectDir);
         if (!dir.exists()) {
@@ -40,7 +47,9 @@ public class ProjectManager {
 
         DuckManager duckManager = null;
         try {
-            String json = new String(Files.readAllBytes(FileSystems.getDefault().getPath(projectDir + "/ducks.json")));
+            String json = new String(
+                    Files.readAllBytes(FileSystems.getDefault().getPath(projectDir + "/" + PROJECT_FILE_NAME))
+            );
             duckManager = DuckManager.createByJson(json);
 
         } catch (IOException ex) {
@@ -49,7 +58,7 @@ public class ProjectManager {
 
 
         File image = new File(projectDir + "/image.png");
-        Project project = new Project(name, image);
+        Project project = new Project(projectName, image);
         if (duckManager != null) {
             project.setDuckManager(duckManager);
         }
@@ -58,21 +67,19 @@ public class ProjectManager {
     }
 
     public void save(Project project) throws IOException {
-        String projectDir = this.dir + "/" + project.getName();
+        String projectDir = getProjectDir(project.getName());
 
         BufferedImage bi = (BufferedImage) project.getImage();
         File f = new File(projectDir + "/image.png");
         ImageIO.write(bi, "png", f);
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(projectDir + "/ducks.json"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(projectDir + "/" + PROJECT_FILE_NAME));
         writer.write(project.getDuckManager().toJson());
         writer.close();
     }
 
     public boolean projectExist(String name) {
-        String projectDir = this.dir + "/" + name;
-
-        File dir = new File(projectDir);
+        File dir = new File(getProjectDir(name));
         return dir.exists();
     }
 }

@@ -1,7 +1,5 @@
-import com.google.gson.Gson;
 import junit.framework.TestCase;
 import ru.jolkin.countDucks.duck.Duck;
-import ru.jolkin.countDucks.duck.DuckManager;
 import ru.jolkin.countDucks.duck.Type;
 
 import java.awt.*;
